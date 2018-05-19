@@ -1,14 +1,21 @@
 class gif_element():
-    # Equivalent to "GIF89a" version
     def __init__(self, element):
         self.element = element
     def get_element(self):
         return self.element
 
+class header(gif_element):
+    def __init__(self, element='474946383961'):
+        self.element = element
+
+class logical_screen_descriptor(gif_element):
+    def __init__(self, element):
+        self.element = element
+
 class GifBreaker():
     def __init__(self):
-        self.header = gif_element('474946383961')
-        self.logical_screen_descriptor = gif_element('0A000A00910000')
+        self.header = header()
+        self.logical_screen_descriptor = logical_screen_descriptor('0A000A00910000')
         self.global_color_table = gif_element('FFFFFFFF00000000FF000000')
         self.graphics_control_extension = gif_element('21F9040000000000')
         self.image_descriptor = gif_element('2C000000000A000A0000')
