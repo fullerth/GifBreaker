@@ -3,10 +3,10 @@
 It is a module that connects knobs to the elements of a gif element.
 It should allow things like connecting a midi knob to the global color table
 """
-class gif_element():
+class GifElement():
     """Interface class for gif elements.
 
-    Use gif_element.get_element() to get the element as a string of hex characters 
+    Use GifElement.get_element() to get the element as a string of hex characters 
     """
 
     def __init__(self, element):
@@ -16,14 +16,14 @@ class gif_element():
         """Return this full element composed as a string of hex characters."""
         return self.element
 
-class header(gif_element):
-    """Represent, but probably don't tweak, a gif file header."""
+class Header(GifElement):
+    """Represent, but probably don't tweak, a gif file Header."""
     
     def __init__(self, element='474946383961'):
         """Modifying this from default will break rendering on most platforms."""
         self.element = element
 
-class logical_screen_descriptor(gif_element):
+class logical_screen_descriptor(GifElement):
     """Represent and tweak a logical screen descriptor."""
 
     def __init__(self, canvas_width, canvas_height, color_ctrl_byte,
@@ -62,21 +62,21 @@ class GifBreaker():
 
     def __init__(self):
         """Currently we're growing a gif from Matthew's example."""
-        self.header = header()
+        self.Header = Header()
         self.logical_screen_descriptor = logical_screen_descriptor(
                 canvas_width = 'A000', canvas_height = 'A000', 
                 color_ctrl_byte='91', background_color_index='00',
                 pixel_aspect_ratio='00')
-        self.global_color_table = gif_element('FFFFFFFF00000000FF000000')
-        self.graphics_control_extension = gif_element('21F9040000000000')
-        self.image_descriptor = gif_element('2C000000000A000A0000')
-        self.image_data = gif_element('02168C2D99872A1CDC33A00275EC95FAA8DE608C04914C0100')
-        self.trailer = gif_element('3B')
+        self.global_color_table = GifElement('FFFFFFFF00000000FF000000')
+        self.graphics_control_extension = GifElement('21F9040000000000')
+        self.image_descriptor = GifElement('2C000000000A000A0000')
+        self.image_data = GifElement('02168C2D99872A1CDC33A00275EC95FAA8DE608C04914C0100')
+        self.trailer = GifElement('3B')
 
     def write_gif_to_file(self):
         """Write the gif out to a file."""
         with open("output.gif", "wb") as f:
-            f.write(bytes.fromhex(self.header.get_element()))
+            f.write(bytes.fromhex(self.Header.get_element()))
             f.write(bytes.fromhex(self.logical_screen_descriptor.get_element()))
             f.write(bytes.fromhex(self.global_color_table.get_element()))
             f.write(bytes.fromhex(self.graphics_control_extension.get_element()))
