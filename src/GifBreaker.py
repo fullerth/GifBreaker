@@ -19,7 +19,7 @@ class logical_screen_descriptor(gif_element):
        self.element = canvas_width + canvas_height + color_ctrl_byte + background_color_index + pixel_aspect_ratio 
     @classmethod
     def fromElement(cls, element):
-        return cls(element[0:4], element[4:8], element[8], element[9], element[10])
+        return cls(element[0:4], element[4:8], element[8:10], element[10:12], element[12:14])
 
 class GifBreaker():
     def __init__(self):
