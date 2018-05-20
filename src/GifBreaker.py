@@ -23,7 +23,7 @@ class Header(GifElement):
         """Modifying this from default will break rendering on most platforms."""
         self.element = element
 
-class logical_screen_descriptor(GifElement):
+class LogicalScreenDescriptor(GifElement):
     """Represent and tweak a logical screen descriptor."""
 
     def __init__(self, canvas_width, canvas_height, color_ctrl_byte,
@@ -51,8 +51,19 @@ class logical_screen_descriptor(GifElement):
         self.element = canvas_width + canvas_height + color_ctrl_byte + background_color_index + pixel_aspect_ratio 
     @classmethod
     def fromElement(cls, element):
-        """Decompose a logical_screen_descriptor from a string of hex characters."""
+        """Decompose a LogicalScreenDescriptor from a string of hex characters."""
         return cls(element[0:4], element[4:8], element[8:10], element[10:12], element[12:14])
+
+class GlobalColorTable():
+    """Represent and tweak the global color table element of a gif."""
+
+    def __init__(self, color_table_size, color_table):
+        """Create a color table of size {0..7}, giving 2 to 256 colors.
+       
+        No internal consistency checking performed on these initilization values.
+        """
+        self.color_table_size = color_table_size
+        self.color_table = color_table
 
 class GifBreaker():
     """GifBreaker renders a gif to a file.
@@ -63,7 +74,7 @@ class GifBreaker():
     def __init__(self):
         """Currently we're growing a gif from Matthew's example."""
         self.Header = Header()
-        self.logical_screen_descriptor = logical_screen_descriptor(
+        self.LogicalScreenDescriptor = LogicalScreenDescriptor(
                 canvas_width = 'A000', canvas_height = 'A000', 
                 color_ctrl_byte='91', background_color_index='00',
                 pixel_aspect_ratio='00')
@@ -77,7 +88,7 @@ class GifBreaker():
         """Write the gif out to a file."""
         with open("output.gif", "wb") as f:
             f.write(bytes.fromhex(self.Header.get_element()))
-            f.write(bytes.fromhex(self.logical_screen_descriptor.get_element()))
+            f.write(bytes.fromhex(self.LogicalScreenDescriptor.get_element()))
             f.write(bytes.fromhex(self.global_color_table.get_element()))
             f.write(bytes.fromhex(self.graphics_control_extension.get_element()))
             f.write(bytes.fromhex(self.image_descriptor.get_element()))
