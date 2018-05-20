@@ -1,7 +1,17 @@
+"""GifBreaker is a module that connects knobs to the elements of a gif element.
+It should allow things like connecting a midi knob to the global color table"""
 class gif_element():
+
+    """Interface class for gif elements
+
+    Use gif_element.get_element() to get the element as a string of hex characters 
+    """
+
     def __init__(self, element):
         self.element = element
     def get_element(self):
+        """Return this full element composed as a string of hex characters
+        """
         return self.element
 
 class header(gif_element):
@@ -11,17 +21,23 @@ class header(gif_element):
 class logical_screen_descriptor(gif_element):
     def __init__(self, canvas_width, canvas_height, color_ctrl_byte,
            background_color_index, pixel_aspect_ratio):
-       self.canvas_width = canvas_width
-       self.canvas_height = canvas_height
-       self.color_ctrl_byte = color_ctrl_byte
-       self.background_color_index = background_color_index
-       self.pixel_aspect_ratio = pixel_aspect_ratio
-       self.element = canvas_width + canvas_height + color_ctrl_byte + background_color_index + pixel_aspect_ratio 
+         
+        self.canvas_width = canvas_width
+        self.canvas_height = canvas_height
+        self.color_ctrl_byte = color_ctrl_byte
+        self.background_color_index = background_color_index
+        self.pixel_aspect_ratio = pixel_aspect_ratio
+        self.element = canvas_width + canvas_height + color_ctrl_byte + background_color_index + pixel_aspect_ratio 
     @classmethod
     def fromElement(cls, element):
         return cls(element[0:4], element[4:8], element[8:10], element[10:12], element[12:14])
 
 class GifBreaker():
+    """
+    GifBreaker renders a gif to a file.
+
+    Growing a stock gif from Matthew's example during gif format decomposition
+    """
     def __init__(self):
         self.header = header()
         self.logical_screen_descriptor = logical_screen_descriptor(
