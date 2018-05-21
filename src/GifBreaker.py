@@ -54,7 +54,7 @@ class LogicalScreenDescriptor(GifElement):
         """Decompose a LogicalScreenDescriptor from a string of hex characters."""
         return cls(element[0:4], element[4:8], element[8:10], element[10:12], element[12:14])
 
-class GlobalColorTable():
+class GlobalColorTable(GifElement):
     """Represent and tweak the global color table element of a gif."""
 
     def __init__(self, color_table_size, color_table):
@@ -63,7 +63,7 @@ class GlobalColorTable():
         No internal consistency checking performed on these initilization values.
         """
         self.color_table_size = color_table_size
-        self.color_table = color_table
+        self.element = color_table
 
 class GifBreaker():
     """GifBreaker renders a gif to a file.
@@ -78,7 +78,7 @@ class GifBreaker():
                 canvas_width = 'A000', canvas_height = 'A000', 
                 color_ctrl_byte='91', background_color_index='00',
                 pixel_aspect_ratio='00')
-        self.global_color_table = GifElement('FFFFFFFF00000000FF000000')
+        self.global_color_table = GlobalColorTable(2, 'FFFFFFFF00000000FF000000')
         self.graphics_control_extension = GifElement('21F9040000000000')
         self.image_descriptor = GifElement('2C000000000A000A0000')
         self.image_data = GifElement('02168C2D99872A1CDC33A00275EC95FAA8DE608C04914C0100')
