@@ -82,8 +82,16 @@ class ImageDescriptor(GifElement):
 class ImageData(GifElement):
     """Represent and tweak image data in a gif."""
 
-    def __init__(self, element):
+    def __init__(self, min_code_size, num_bytes, data, block_terminator="00"):
         """Takes fully formed LZW compressed and packed image data"""
+        self.min_code_size = min_code_size
+        self.num_bytes = num_bytes
+        self.data = data
+        self.block_terminator = block_terminator
+        self.element = min_code_size+num_bytes+data+block_terminator
+
+    @classmethod
+    def fromElement(self, element):
         self.element = element
 
 class GifFooter(GifElement):
