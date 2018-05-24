@@ -65,6 +65,20 @@ class GlobalColorTable(GifElement):
         self.color_table_size = color_table_size
         self.element = color_table
 
+class GraphicsControlExtension(GifElement):
+    """Represent and tweak the values in a graphics control element of a gif."""
+
+    def __init__(self, element):
+        """Takes a fully formed graphics control element and stores it."""
+        self.element = element
+
+class ImageDescriptor(GifElement):
+    """Represent and tweak an image description in a gif."""
+
+    def __init__(self, element):
+        """Takes a fully formed image description and stores it."""
+        self.element = element
+
 class GifBreaker():
     """GifBreaker renders a gif to a file.
 
@@ -73,22 +87,22 @@ class GifBreaker():
 
     def __init__(self):
         """Currently we're growing a gif from Matthew's example."""
-        self.Header = Header()
-        self.LogicalScreenDescriptor = LogicalScreenDescriptor(
+        self.header = Header()
+        self.logical_screen_descriptor = LogicalScreenDescriptor(
                 canvas_width = 'A000', canvas_height = 'A000', 
                 color_ctrl_byte='91', background_color_index='00',
                 pixel_aspect_ratio='00')
-        self.global_color_table = GlobalColorTable(2, 'FFFFFFFF00000000FF000000')
-        self.graphics_control_extension = GifElement('21F9040000000000')
-        self.image_descriptor = GifElement('2C000000000A000A0000')
+        self.global_color_table = GlobalColorTable(2, 'BBBBBBFFAA0000CCFF002200')
+        self.graphics_control_extension = GraphicsControlExtension('21F9040000000000')
+        self.image_descriptor = ImageDescriptor('2C000000000A000A0000')
         self.image_data = GifElement('02168C2D99872A1CDC33A00275EC95FAA8DE608C04914C0100')
         self.trailer = GifElement('3B')
 
     def write_gif_to_file(self):
         """Write the gif out to a file."""
         with open("output.gif", "wb") as f:
-            f.write(bytes.fromhex(self.Header.get_element()))
-            f.write(bytes.fromhex(self.LogicalScreenDescriptor.get_element()))
+            f.write(bytes.fromhex(self.header.get_element()))
+            f.write(bytes.fromhex(self.logical_screen_descriptor.get_element()))
             f.write(bytes.fromhex(self.global_color_table.get_element()))
             f.write(bytes.fromhex(self.graphics_control_extension.get_element()))
             f.write(bytes.fromhex(self.image_descriptor.get_element()))
