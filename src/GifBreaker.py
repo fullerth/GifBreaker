@@ -91,8 +91,15 @@ class ImageData(GifElement):
         self.element = min_code_size+num_bytes+data+block_terminator
 
     @classmethod
-    def fromElement(self, element):
-        self.element = element
+    def fromElement(cls, element):
+        min_code_size = element[0:2]
+        num_bytes = element[2:4]
+        #Add 4 to the read index to offset the 4 header ascii characters
+        num_bytes_offset = int(num_bytes, 16) + 4
+        import pdb; pdb.set_trace()
+        return cls(min_code_size = min_code_size, num_bytes = element[2:4],
+                data = element[4:num_bytes_offset],
+                block_terminator = element[num_bytes_offset:num_bytes_offset+2])
 
 class GifFooter(GifElement):
     """Represent the gif ending byte of 3B as a class, cause, i dunno. just cause"""

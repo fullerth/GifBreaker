@@ -46,6 +46,7 @@ class test_ImageData(unittest.TestCase):
         self.assertEqual(expected['num_bytes'], observed.num_bytes)
         self.assertEqual(expected['data'], observed.data)
         self.assertEqual(expected['block_terminator'], observed.block_terminator)
+        self.assertEqual(expected['element'], observed.element)
 
     def test_ImageData_constructor(self):
         expected = {}
@@ -53,6 +54,8 @@ class test_ImageData(unittest.TestCase):
         expected['num_bytes'] = "16"
         expected['data'] = "8C2D99872A1CDC33A00275EC95FAA8DE608C04914C01"
         expected['block_terminator'] = "00"
+        expected['element'] = (expected['min_code_size'] + expected['num_bytes'] +
+                expected['data'] + expected['block_terminator'])
 
         #Default block terminator
         id = src.GifBreaker.ImageData(min_code_size=expected['min_code_size'],
@@ -61,7 +64,24 @@ class test_ImageData(unittest.TestCase):
         self.compare_ImageData(expected, id)
 
         expected['block_terminator'] = "AA"
+        expected['element'] = (expected['min_code_size'] + expected['num_bytes'] +
+                expected['data'] + expected['block_terminator'])
         id = src.GifBreaker.ImageData(min_code_size=expected['min_code_size'],
                 num_bytes = expected['num_bytes'], data = expected['data'], 
                 block_terminator = expected['block_terminator'])
         self.compare_ImageData(expected, id)
+
+    def test_ImageData_fromElement(self):
+        expected = {}
+        expected['min_code_size'] = "10"
+        expected['num_bytes'] = "40"
+        expected['data'] = "ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789"
+        expected['block_terminator'] = "BB"
+        expected['element'] = (expected['min_code_size'] + expected['num_bytes'] +
+                expected['data'] + expected['block_terminator'])
+
+        id = src.GifBreaker.ImageData.fromElement(expected['element'])
+        self.compare_ImageData(expected, id)
+
+
+
