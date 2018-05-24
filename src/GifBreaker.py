@@ -79,6 +79,20 @@ class ImageDescriptor(GifElement):
         """Takes a fully formed image description and stores it."""
         self.element = element
 
+class ImageData(GifElement):
+    """Represent and tweak image data in a gif."""
+
+    def __init__(self, element):
+        """Takes fully formed LZW compressed and packed image data"""
+        self.element = element
+
+class GifFooter(GifElement):
+    """Represent the gif ending byte of 3B as a class, cause, i dunno. just cause"""
+
+    def __init__(self, elemment="3B"):
+        """Default value is correct, but will store another one if asked."""
+        self.element = element
+
 class GifBreaker():
     """GifBreaker renders a gif to a file.
 
@@ -95,8 +109,8 @@ class GifBreaker():
         self.global_color_table = GlobalColorTable(2, 'BBBBBBFFAA0000CCFF002200')
         self.graphics_control_extension = GraphicsControlExtension('21F9040000000000')
         self.image_descriptor = ImageDescriptor('2C000000000A000A0000')
-        self.image_data = GifElement('02168C2D99872A1CDC33A00275EC95FAA8DE608C04914C0100')
-        self.trailer = GifElement('3B')
+        self.image_data = ImageData('02168C2D99872A1CDC33A00275EC95FAA8DE608C04914C0100')
+        self.trailer = GifFooter()
 
     def write_gif_to_file(self):
         """Write the gif out to a file."""
