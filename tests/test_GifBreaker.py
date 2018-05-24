@@ -41,23 +41,27 @@ class test_GlobalColorTable(unittest.TestCase):
         self.assertEqual(gct.element, expected_color_table)
         
 class test_ImageData(unittest.TestCase):
+    def compare_ImageData(self, expected, observed):
+        self.assertEqual(expected['min_code_size'], observed.min_code_size)
+        self.assertEqual(expected['num_bytes'], observed.num_bytes)
+        self.assertEqual(expected['data'], observed.data)
+        self.assertEqual(expected['block_terminator'], observed.block_terminator)
+
     def test_ImageData_constructor(self):
-        expected_minimum_code_size = "02"
-        expected_num_bytes = "16"
-        expected_data = "8C2D99872A1CDC33A00275EC95FAA8DE608C04914C01"
-        expected_block_terminator = "00"
+        expected = {}
+        expected['min_code_size'] = "02"
+        expected['num_bytes'] = "16"
+        expected['data'] = "8C2D99872A1CDC33A00275EC95FAA8DE608C04914C01"
+        expected['block_terminator'] = "00"
 
         #Default block terminator
-        id = src.GifBreaker.ImageData(min_code_size=expected_minimum_code_size,
-                num_bytes = expected_num_bytes,
-                data = expected_data)
-        self.assertEqual(id.min_code_size, expected_minimum_code_size)
-        self.assertEqual(id.num_bytes, expected_num_bytes)
-        self.assertEqual(id.data, expected_data)
-        self.assertEqual(id.block_terminator, expected_block_terminator)
+        id = src.GifBreaker.ImageData(min_code_size=expected['min_code_size'],
+                num_bytes = expected['num_bytes'],
+                data = expected['data'])
+        self.compare_ImageData(expected, id)
 
-        expected_block_terminator = "AA"
-        id = src.GifBreaker.ImageData(min_code_size=expected_minimum_code_size,
-                num_bytes = expected_num_bytes, data = expected_data, 
-                block_terminator = expected_block_terminator)
-        self.assertEqual(id.block_terminator, expected_block_terminator)
+        expected['block_terminator'] = "AA"
+        id = src.GifBreaker.ImageData(min_code_size=expected['min_code_size'],
+                num_bytes = expected['num_bytes'], data = expected['data'], 
+                block_terminator = expected['block_terminator'])
+        self.compare_ImageData(expected, id)
