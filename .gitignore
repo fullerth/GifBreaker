@@ -46,3 +46,4 @@ gb_venv/
 
 # Vim
 *.swp
+*.swo
