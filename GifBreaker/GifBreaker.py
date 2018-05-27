@@ -22,7 +22,9 @@ class GifBreaker():
                 pixel_aspect_ratio='00')
         self.global_color_table = ColorTable(2, 'BBBBBBFFAA0000CCFF002200')
         self.graphics_control_extension = GraphicsControlExtension('21F9040000000000')
-        self.image_descriptor = ImageDescriptor('2C000000000A000A0000')
+        self.image_descriptor = ImageDescriptor(image_left = '0000', 
+            image_top = '0000', image_width = '0A00', image_height = '0A00',
+            packed_field = '00')
         self.image_data = ImageData(min_code_size = '02', num_bytes = '16',
             data = '8C2D99872A1CDC33A00275EC95FAA8DE608C04914C01')
         self.trailer = Footer()

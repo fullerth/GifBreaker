@@ -1,5 +1,6 @@
 import unittest
-from GifBreaker.GifFile import LogicalScreenDescriptor, ColorTable, ImageData
+from GifBreaker.GifFile import LogicalScreenDescriptor, ColorTable, ImageData, \
+        ImageDescriptor
 
 class test_LogicalScreenDescriptor(unittest.TestCase):
     def compare_LogicalScreenDescriptor(self, lsd, expected):
@@ -83,3 +84,29 @@ class test_ImageData(unittest.TestCase):
         id = ImageData.fromElement(expected['element'])
         self.compare_ImageData(expected, id)
 
+class test_ImageDescriptor(unittest.TestCase):
+    def test_ImageDescriptor_constructor(self):
+        expected = {}
+        expected['image_separator'] = "2C" # This is always 2C
+        expected['image_left'] = "1234"
+        expected['image_top'] = "5678"
+        expected['image_width'] = "9ABC"
+        expected['image_height'] = "DEF0"
+        expected['packed_field'] = "20"
+        expected['element'] = (expected['image_separator'] + 
+                expected['image_left'] + expected['image_top'] + 
+                expected['image_width'] + expected['image_height'] + 
+                expected['packed_field']) 
+        i_d = ImageDescriptor(image_left = expected['image_left'],
+                image_top = expected['image_top'],
+                image_width = expected['image_width'],
+                image_height = expected['image_height'],
+                packed_field = expected['packed_field'])
+
+        self.assertEqual(i_d.image_separator, expected['image_separator'])
+        self.assertEqual(i_d.image_left, expected['image_left'])
+        self.assertEqual(i_d.image_top, expected['image_top'])
+        self.assertEqual(i_d.image_width, expected['image_width'])
+        self.assertEqual(i_d.image_height, expected['image_height'])
+        self.assertEqual(i_d.packed_field, expected['packed_field'])
+        self.assertEqual(i_d.element, expected['element'])

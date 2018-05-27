@@ -77,9 +77,17 @@ class GraphicsControlExtension(Element):
 class ImageDescriptor(Element):
     """Represent and tweak an image description in a gif."""
 
-    def __init__(self, element):
-        """Takes a fully formed image description and stores it."""
-        self.element = element
+    def __init__(self, image_left, image_top, image_width, image_height,
+            packed_field, image_separator="2C"):
+        """Takes the pieces of an image descriptor to create a representation"""
+        self.image_separator = image_separator
+        self.image_left = image_left
+        self.image_top = image_top
+        self.image_width = image_width
+        self.image_height = image_height
+        self.packed_field = packed_field
+        self.element = (image_separator + image_left + image_top + image_width +
+                image_height + packed_field)
 
 class ImageData(Element):
     """Represent and tweak image data in a gif."""
