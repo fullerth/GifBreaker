@@ -1,5 +1,5 @@
 import unittest
-from src.GifFile import LogicalScreenDescriptor, ColorTable, ImageData
+from GifBreaker.GifFile import LogicalScreenDescriptor, ColorTable, ImageData
 
 class test_LogicalScreenDescriptor(unittest.TestCase):
     def compare_LogicalScreenDescriptor(self, lsd, expected):

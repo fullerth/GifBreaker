@@ -4,7 +4,7 @@ It is a module that connects knobs to the elements of a gif element.
 It should allow things like connecting a midi knob to the global color table
 """
 
-from src.GifFile import Header, LogicalScreenDescriptor, ColorTable, \
+from GifBreaker.GifFile import Header, LogicalScreenDescriptor, ColorTable, \
         GraphicsControlExtension, ImageDescriptor, ImageData, Footer
 
 class GifBreaker():
@@ -27,13 +27,16 @@ class GifBreaker():
             data = '8C2D99872A1CDC33A00275EC95FAA8DE608C04914C01')
         self.trailer = Footer()
 
-    def add_local_color_table(self):
+    def add_local_color_table(self, size, data):
         """Adds a static local color table to the one local image_data in this class"""
-        pass
+        local_color_table_flag_mask = 0b10000000
 
-    def write_gif_to_file(self):
+        self.local_color_table = data
+        
+
+    def write_gif_to_file(self, filename="output.gif"):
         """Write the gif out to a file."""
-        with open("output.gif", "wb") as f:
+        with open(filename, "wb") as f:
             f.write(bytes.fromhex(self.header.get_element()))
             f.write(bytes.fromhex(self.logical_screen_descriptor.get_element()))
             f.write(bytes.fromhex(self.global_color_table.get_element()))
@@ -42,6 +45,3 @@ class GifBreaker():
             f.write(bytes.fromhex(self.image_data.get_element()))
             f.write(bytes.fromhex(self.trailer.get_element()))
     
-if __name__=="__main__":
-    gb = GifBreaker()
-    gb.write_gif_to_file()
