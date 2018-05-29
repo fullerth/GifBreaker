@@ -33,7 +33,7 @@ class GifBreaker():
         """Add a static local color table to the one local image_data in this class.
         
         IN:
-        size - hex string with size of the local color table {0..7}. Will be truncated to 3 bits.
+        size - integer size of the local color table {0..7}. Will be truncated to 3 bits.
         data - a hex string containing the local_color_table data
         """
         local_color_table_flag_mask = 0b10000000
@@ -41,6 +41,7 @@ class GifBreaker():
 
         packed_temp = int(self.image_descriptor.packed_field, 16)
         packed_temp |= local_color_table_flag_mask
+        packed_temp |= size
         packed_temp_str = "{:X}".format(packed_temp)
         self.image_descriptor.packed_field = packed_temp_str
 
