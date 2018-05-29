@@ -36,6 +36,8 @@ class GifBreaker():
         size - integer size of the local color table {0..7}. Will be truncated to 3 bits.
         data - a hex string containing the local_color_table data
         """
+        if(size < 1 or size > 7):
+            raise ValueError("Size must be between 1 and 7")
         local_color_table_flag_mask = 0b10000000
         self.local_color_table = ColorTable(size, data)
 
