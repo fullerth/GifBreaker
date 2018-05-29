@@ -1,4 +1,4 @@
-"""GifFile contains tools to break down a gif file into individual elements"""
+"""GifFile contains tools to break down a gif file into individual elements."""
 
 class Element():
     """Interface class for gif elements.
@@ -71,7 +71,7 @@ class GraphicsControlExtension(Element):
     """Represent and tweak the values in a graphics control element of a gif."""
 
     def __init__(self, element):
-        """Takes a fully formed graphics control element and stores it."""
+        """Take a fully formed graphics control element and store it."""
         self.element = element
 
 class ImageDescriptor(Element):
@@ -79,7 +79,7 @@ class ImageDescriptor(Element):
 
     def __init__(self, image_left, image_top, image_width, image_height,
             packed_field, image_separator="2C"):
-        """Takes the pieces of an image descriptor to create a representation"""
+        """Take the pieces of an image descriptor to create a representation."""
         self.image_separator = image_separator
         self.image_left = image_left
         self.image_top = image_top
@@ -93,13 +93,14 @@ class ImageData(Element):
     """Represent and tweak image data in a gif."""
 
     def __init__(self, min_code_size, num_bytes, data, block_terminator="00"):
-        """Creates an ImageData element from constituient parts
+        """Create an ImageData element from constituient parts.
         
         IN:
         min_code_size - the minimum code size for the existing color table
         num_bytes - the number of bytes in the color table
         data - the actual image data as a string of hex bytes
-        block_terminator - 00 in the format, also the default. Change at your own risk."""
+        block_terminator - 00 in the format, also the default. Change at your own risk.
+        """
         self.min_code_size = min_code_size
         self.num_bytes = num_bytes
         self.data = data
@@ -108,6 +109,7 @@ class ImageData(Element):
 
     @classmethod
     def fromElement(cls, element):
+        """Decompose an ImageData element from a hex string."""
         min_code_size = element[0:2]
         num_bytes = element[2:4]
         #Add 4 to the read index to offset the 4 header ascii characters
@@ -117,7 +119,7 @@ class ImageData(Element):
                 block_terminator = element[num_bytes_offset:num_bytes_offset+2])
 
 class Footer(Element):
-    """Represent the gif ending byte of 3B as a class, cause, i dunno. just cause"""
+    """Represent the gif ending byte of 3B as a class, cause, i dunno. just cause."""
 
     def __init__(self, element="3B"):
         """Default value is correct, but will store another one if asked."""

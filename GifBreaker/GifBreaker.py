@@ -23,18 +23,26 @@ class GifBreaker():
         self.global_color_table = ColorTable(2, 'BBBBBBFFAA0000CCFF002200')
         self.graphics_control_extension = GraphicsControlExtension('21F9040000000000')
         self.image_descriptor = ImageDescriptor(image_left = '0000', 
-            image_top = '0000', image_width = '0A00', image_height = '0A00',
-            packed_field = '00')
+                image_top = '0000', image_width = '0A00', image_height = '0A00',
+                packed_field = '00')
         self.image_data = ImageData(min_code_size = '02', num_bytes = '16',
             data = '8C2D99872A1CDC33A00275EC95FAA8DE608C04914C01')
         self.trailer = Footer()
 
     def add_local_color_table(self, size, data):
-        """Adds a static local color table to the one local image_data in this class"""
-        local_color_table_flag_mask = 0b10000000
-
-        self.local_color_table = data
+        """Add a static local color table to the one local image_data in this class.
         
+        IN:
+        size - hex string with size of the local color table {0..7}. Will be truncated to 3 bits.
+        data - a hex string containing the local_color_table data
+        """
+        local_color_table_flag_mask = 0b10000000
+        self.local_color_table = ColorTable(size, data)
+
+        packed_temp = int(self.image_descriptor.packed_field, 16)
+        packed_temp |= local_color_table_flag_mask
+        packed_temp_str = "{:X}".format(packed_temp)
+        self.image_descriptor.packed_field = packed_temp_str
 
     def write_gif_to_file(self, filename="output.gif"):
         """Write the gif out to a file."""
@@ -46,4 +54,4 @@ class GifBreaker():
             f.write(bytes.fromhex(self.image_descriptor.get_element()))
             f.write(bytes.fromhex(self.image_data.get_element()))
             f.write(bytes.fromhex(self.trailer.get_element()))
-    
+

@@ -10,7 +10,7 @@ class test_GifBreaker(unittest.TestCase):
         gb = GifBreaker()
         gb.add_local_color_table(size=color_table_size, 
                 data=expected_color_table_data)
-        self.assertEqual(gb.local_color_table, expected_color_table_data)
+        self.assertEqual(gb.local_color_table.get_element(), expected_color_table_data)
 
         packed_byte = int(gb.image_descriptor.get_element()[9], 16)
         # Check the Packed Field in the image descriptor to ensure that the
