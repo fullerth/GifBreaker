@@ -1,6 +1,6 @@
 import unittest
 from GifBreaker.GifFile import LogicalScreenDescriptor, ColorTable, ImageData, \
-        ImageDescriptor
+        ImageDescriptor, GraphicsControlExtension
 
 class test_LogicalScreenDescriptor(unittest.TestCase):
     def compare_LogicalScreenDescriptor(self, lsd, expected):
@@ -88,11 +88,11 @@ class test_ImageDescriptor(unittest.TestCase):
     def test_ImageDescriptor_constructor(self):
         expected = {}
         expected['image_separator'] = "2C" # This is always 2C
-        expected['image_left'] = "1234"
-        expected['image_top'] = "5678"
-        expected['image_width'] = "9ABC"
-        expected['image_height'] = "DEF0"
-        expected['packed_field'] = "20"
+        expected['image_left'] = "4C74"
+        expected['image_top'] = "5470"
+        expected['image_width'] = "5764"
+        expected['image_height'] = "4874"
+        expected['packed_field'] = "50"
         expected['element'] = (expected['image_separator'] + 
                 expected['image_left'] + expected['image_top'] + 
                 expected['image_width'] + expected['image_height'] + 
@@ -110,3 +110,4 @@ class test_ImageDescriptor(unittest.TestCase):
         self.assertEqual(i_d.image_height, expected['image_height'])
         self.assertEqual(i_d.packed_field, expected['packed_field'])
         self.assertEqual(i_d.element, expected['element'])
+

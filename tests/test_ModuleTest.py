@@ -13,5 +13,5 @@ class test_GifBreakerModule(unittest.TestCase):
         It should be a color shifted version of the initial write_to_file test"""
         filename = "local_color_table.gif"
         gb = GifBreaker()
-        gb.add_local_color_table(2, 'DDDDDD112233445566778800')
+        gb.add_local_color_table(1, '47726E526564426C75426C6B')
         gb.write_gif_to_file(filename=filename)

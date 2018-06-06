@@ -89,6 +89,11 @@ class ImageDescriptor(Element):
         self.element = (image_separator + image_left + image_top + image_width +
                 image_height + packed_field)
 
+    def get_element(self):
+        self.element = (self.image_separator + self.image_left + self.image_top + 
+                self.image_width + self.image_height + self.packed_field)
+        return self.element 
+
 class ImageData(Element):
     """Represent and tweak image data in a gif."""
 
