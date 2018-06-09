@@ -90,6 +90,7 @@ class ImageDescriptor(Element):
                 image_height + packed_field)
 
     def get_element(self):
+        """Element needs to be recreated before returning it."""
         self.element = (self.image_separator + self.image_left + self.image_top + 
                 self.image_width + self.image_height + self.packed_field)
         return self.element 
