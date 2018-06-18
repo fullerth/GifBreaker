@@ -48,3 +48,5 @@ gb_venv/
 *.swp
 *.swo
 Session.vim
+.vimlocal
+.tags
